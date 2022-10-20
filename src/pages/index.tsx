@@ -97,9 +97,6 @@ export default function HomePage() {
               <h1 className='mt-4'>
                 Clean your discord easily <span>🧹</span>
               </h1>
-              <p className='text-md mt-2 text-gray-800'>
-                Don't share you token anywhere. It's a secret.
-              </p>
 
               <div className='mt-6 w-full'>
                 <label
@@ -135,6 +132,7 @@ export default function HomePage() {
             <div className='layout grid min-h-screen max-w-4xl grid-cols-3 justify-center gap-4 py-24 text-left'>
               {guilds.map((guild) => (
                 <div
+                  key={guild.id}
                   onClick={() => handleGuildSelect(guild.id)}
                   className={clx(
                     'rounded-lg border border-gray-200 p-4 hover:bg-blue-100',
