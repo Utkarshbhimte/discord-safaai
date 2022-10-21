@@ -95,7 +95,7 @@ export default function HomePage() {
       guildDetailsFromLocalStorage
     );
 
-    if (!!guildDetailsFromLocalStorage?.id) {
+    if (guildDetailsFromLocalStorage?.id) {
       const newGuildDetails: Record<string, Guild> = {
         ...(guildDetails || {}),
         [guildId]: guildDetailsFromLocalStorage,
