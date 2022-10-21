@@ -45,10 +45,6 @@ export default function HomePage() {
     // get token value
     const input = e.currentTarget.elements.namedItem('token');
     const currToken = (input as any)?.value;
-    console.log(
-      '🚀 ~ file: index.tsx ~ line 46 ~ consthandleSubmit:React.FormEventHandler<HTMLFormElement>= ~ currToken',
-      currToken
-    );
 
     setToken(currToken);
     await fetchGuilds();
@@ -65,9 +61,9 @@ export default function HomePage() {
     const json: Guild[] = await resp.json();
     setGuilds(json);
 
-    await Promise.all(
-      Object.values(json).map((guild) => fetchGuildDetails(guild.id))
-    );
+    // await Promise.all(
+    //   Object.values(json).map((guild) => fetchGuildDetails(guild.id))
+    // );
   };
 
   const handleGuildSelect = (guildId: string) => {
