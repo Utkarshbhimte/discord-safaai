@@ -60,10 +60,6 @@ export default function HomePage() {
     );
     const json: Guild[] = await resp.json();
     setGuilds(json);
-
-    // await Promise.all(
-    //   Object.values(json).map((guild) => fetchGuildDetails(guild.id))
-    // );
   };
 
   const handleGuildSelect = (guildId: string) => {
@@ -77,48 +73,6 @@ export default function HomePage() {
     }
 
     setSelectedGuilds(newSelectedGuilds);
-  };
-
-  // get guild details
-  const fetchGuildDetails = async (guildId: string) => {
-    if (!guildId) {
-      return;
-    }
-
-    const cacheKey = `guildDetails-${guildId}`;
-    // check local storage first
-    const guildDetailsFromLocalStorage: Guild = JSON.parse(
-      localStorage.getItem(cacheKey) || '{}'
-    );
-    console.log(
-      '🚀 ~ file: index.tsx ~ line 95 ~ fetchGuildDetails ~ guildDetailsFromLocalStorage',
-      guildDetailsFromLocalStorage
-    );
-
-    if (guildDetailsFromLocalStorage?.id) {
-      const newGuildDetails: Record<string, Guild> = {
-        ...(guildDetails || {}),
-        [guildId]: guildDetailsFromLocalStorage,
-      };
-
-      setGuildDetails(newGuildDetails);
-      return;
-    }
-
-    try {
-      const resp = await fetch(
-        `https://canary.discord.com/api/guilds/${guildId}`,
-        { headers: { authorization: token || '' } }
-      );
-      const json = await resp.json();
-
-      // cache to local storage to speed up load time
-      localStorage.setItem(cacheKey, JSON.stringify(json));
-
-      return json;
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   const deleteGuild = async (guildId: string) => {
