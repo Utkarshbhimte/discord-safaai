@@ -1,6 +1,17 @@
+import Logo from '@/components/Logo';
 import * as React from 'react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   // Put Header or Footer Here
-  return <>{children}</>;
+  return (
+    <div className='min-h-screen bg-purple text-white'>
+      <div className='fixed top-0 w-full'>
+        <div className='layout py-6'>
+          <Logo />
+        </div>
+      </div>
+
+      {children}
+    </div>
+  );
 }

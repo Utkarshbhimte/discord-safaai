@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        primary: ['Source Sans Pro', ...fontFamily.sans],
+        primary: ['General Sans', ...fontFamily.sans],
       },
       colors: {
         // primary: {
@@ -25,6 +25,10 @@ module.exports = {
         //   900: 'rgb(var(--tw-color-primary-900) / <alpha-value>)',
         // },
         primary: colors.indigo,
+        purple: '#120029',
+        yellow: '#FFBB01',
+        pink: '#EA1478',
+
         dark: '#222222',
       },
       keyframes: {
