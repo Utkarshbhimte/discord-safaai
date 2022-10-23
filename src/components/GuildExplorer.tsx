@@ -23,7 +23,9 @@ const GuildExplorer: React.FC<GuildExplorerProps> = ({
     <>
       <div className='flex max-w-lg items-stretch'>
         <input
-          type='text'
+          type='search'
+          onChange={(e) => setSearchTerm(e.target.value)}
+          value={searchTerm}
           className='block w-full rounded-md border-2 border-yellow bg-transparent text-white shadow-sm focus:border-yellow focus:ring-yellow'
           placeholder='Search Discord servers'
         />
