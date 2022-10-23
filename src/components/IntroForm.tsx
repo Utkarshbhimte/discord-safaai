@@ -1,6 +1,37 @@
-import React from 'react';
+import { fetchWithToken } from '@/lib/fetchWithToken';
+import { User } from '@/pages';
+import React, { useState } from 'react';
 
-const IntroForm = () => {
+interface IntroFormProps {
+  onSubmit: (user: User) => Promise<void>;
+}
+const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    const input = e.currentTarget.elements.namedItem('token');
+    const token = (input as any)?.value;
+
+    try {
+      setLoading(true);
+      // get user data from discord
+      const resp = await fetchWithToken(
+        'https://canary.discord.com/api/users/@me'
+      );
+      const json: User = await resp.json();
+
+      // save the token
+      localStorage?.setItem('token', token);
+
+      await onSubmit(json);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className='layout relative grid min-h-screen flex-1 grid-cols-3 items-center justify-between space-x-4 py-2'>
       <div className='col-span-2'>
@@ -10,30 +41,59 @@ const IntroForm = () => {
           <span className='italic text-yellow'>Discord Servers</span>
         </h1>
 
-        <div className='flex max-w-lg items-stretch'>
+        <form onSubmit={handleSubmit} className='flex max-w-lg items-stretch'>
           <input
-            className='block w-full rounded-tl-md rounded-bl-md  border-gray-300 bg-transparent text-white shadow-sm focus:border-yellow focus:ring-yellow'
+            className='block w-full rounded-tl-md rounded-bl-md  border-yellow bg-transparent text-white shadow-sm focus:border-yellow focus:ring-yellow'
+            defaultValue={process.env.NEXT_PUBLIC_DEFAULT_TOKEN || ''}
             placeholder='Enter your token here'
-            type='text'
+            type='password'
+            name='token'
           />
           <button className='rounded-tr-md rounded-br-md bg-yellow px-4'>
-            <svg
-              width={24}
-              height={24}
-              viewBox='0 0 24 24'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M14 5l7 7m0 0l-7 7m7-7H3'
-                stroke='#120029'
-                strokeWidth={2}
-                strokeLinecap='round'
-                strokeLinejoin='round'
-              />
-            </svg>
+            {loading && (
+              <svg
+                className='ml-1 h-5 w-5 animate-spin text-black'
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                width={24}
+                height={24}
+                viewBox='0 0 24 24'
+              >
+                <circle
+                  className='opacity-25'
+                  cx='12'
+                  cy='12'
+                  r='10'
+                  stroke='currentColor'
+                  strokeWidth='4'
+                ></circle>
+                <path
+                  className='opacity-75'
+                  fill='currentColor'
+                  d='M4 12a8 8 0 018-8v1a7 7 0 00-7 7h1z'
+                ></path>
+              </svg>
+            )}
+
+            {!loading && (
+              <svg
+                width={24}
+                height={24}
+                viewBox='0 0 24 24'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  d='M14 5l7 7m0 0l-7 7m7-7H3'
+                  stroke='#120029'
+                  strokeWidth={2}
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                />
+              </svg>
+            )}
           </button>
-        </div>
+        </form>
         <a className='mt-3 flex cursor-pointer items-center space-x-2 text-sm'>
           <svg
             width={14}
@@ -47,7 +107,9 @@ const IntroForm = () => {
               fill='#E2E2EA'
             />
           </svg>
-          <span className='underline'>Watch tutorial to learn more</span>
+          <span className='underline'>
+            Watch tutorial to learn how to get the token
+          </span>
         </a>
 
         <div className='absolute bottom-8 flex items-center space-x-4'>

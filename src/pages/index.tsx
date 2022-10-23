@@ -1,9 +1,10 @@
 import * as React from 'react';
 
+import IntroForm from '@/components/IntroForm';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
-import clx from 'classnames';
-import IntroForm from '@/components/IntroForm';
+import { fetchWithToken } from '@/lib/fetchWithToken';
+import GuildExplorer from '@/components/GuildExplorer';
 /**
  * SVGR Support
  * Caveat: No React Props Type.
@@ -26,36 +27,57 @@ export interface Guild {
   permissions_new: string;
 }
 
+export interface User {
+  id: string;
+  username: string;
+  avatar: string;
+  avatar_decoration: any;
+  discriminator: string;
+  public_flags: number;
+  flags: number;
+  purchased_flags: number;
+  premium_usage_flags: number;
+  banner: any;
+  banner_color: any;
+  accent_color: any;
+  bio: string;
+  locale: string;
+  nsfw_allowed: boolean;
+  mfa_enabled: boolean;
+  premium_type: number;
+  email: string;
+  verified: boolean;
+  phone: string;
+}
+
 export default function HomePage() {
-  const [token, setToken] = React.useState<string>();
+  // const [token, setToken] = React.useState<string>();
 
   const [loading, setLoading] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
 
   const [searchTerm, setSearchTerm] = React.useState('');
 
   const [guilds, setGuilds] = React.useState<Guild[]>([]);
   const [selectedGuilds, setSelectedGuilds] = React.useState<string[]>([]);
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    setErrorMessage('');
+  const [userData, setUserData] = React.useState<User>();
 
-    // get token value
-    const input = e.currentTarget.elements.namedItem('token');
-    const currToken = (input as any)?.value;
-
-    setToken(currToken);
-    await fetchGuilds();
-
-    // sace the user's token to localstorage
-    localStorage?.setItem('token', currToken);
+  const handleSubmit = async (currUser: User) => {
+    setUserData(currUser);
+    return await fetchGuilds();
   };
 
   const fetchGuilds = async () => {
+    // fetch token from localstorage
+    const token = localStorage?.getItem('token');
+
+    if (!token) {
+      throw new Error('No token found');
+    }
+
     const resp = await fetch(
       'https://canary.discord.com/api/users/@me/guilds',
-      { headers: { authorization: token || '' } }
+      { headers: { authorization: token } }
     );
     const json: Guild[] = await resp.json();
     setGuilds(json);
@@ -75,10 +97,12 @@ export default function HomePage() {
   };
 
   const deleteGuild = async (guildId: string) => {
-    return fetch(`https://discord.com/api/v9/users/@me/guilds/${guildId}`, {
-      method: 'DELETE',
-      headers: { authorization: token || '' },
-    });
+    return fetchWithToken(
+      `https://discord.com/api/v9/users/@me/guilds/${guildId}`,
+      {
+        method: 'DELETE',
+      }
+    );
   };
 
   const deleteAllGuilds = async () => {
@@ -111,7 +135,6 @@ export default function HomePage() {
   React.useEffect(() => {
     const tokenFromLocalStorage = localStorage?.getItem('token');
     if (tokenFromLocalStorage) {
-      setToken(tokenFromLocalStorage);
       fetchGuilds();
     }
   }, []);
@@ -121,7 +144,25 @@ export default function HomePage() {
       {/* <Seo templateTitle='Home' /> */}
       <Seo />
 
-      <IntroForm />
+      {!userData && <IntroForm onSubmit={handleSubmit} />}
+
+      {!!userData && (
+        <div className='layout pt-24'>
+          <div className='py-6'>
+            <h1 className='mb-2 text-4xl font-semibold'>
+              Hey <span className='text-yellow'>#{userData.username}</span>
+            </h1>
+            <p className='text-lg text-gray-400'>
+              Select and delete the servers which you no longer require
+            </p>
+          </div>
+          <GuildExplorer
+            guilds={guilds}
+            onGuildSelect={handleGuildSelect}
+            selectedGuilds={selectedGuilds}
+          />
+        </div>
+      )}
     </Layout>
   );
 }
