@@ -7,11 +7,13 @@ interface GuildExplorerProps {
   guilds: Guild[];
   selectedGuilds: string[];
   onGuildSelect: (guildId: string) => void;
+  setSelectedGuilds: React.Dispatch<React.SetStateAction<string[]>>;
 }
 const GuildExplorer: React.FC<GuildExplorerProps> = ({
   guilds,
   onGuildSelect,
   selectedGuilds,
+  setSelectedGuilds,
 }) => {
   const [searchTerm, setSearchTerm] = React.useState('');
 
@@ -21,14 +23,26 @@ const GuildExplorer: React.FC<GuildExplorerProps> = ({
 
   return (
     <>
-      <div className='flex max-w-lg items-stretch'>
+      <div className='flex max-w-lg items-center space-x-2'>
         <input
           type='search'
           onChange={(e) => setSearchTerm(e.target.value)}
           value={searchTerm}
-          className='block w-full rounded-md border-2 border-yellow bg-transparent text-white shadow-sm focus:border-yellow focus:ring-yellow'
+          className='mr-4 block w-full rounded-md border-2 border-yellow bg-transparent text-white shadow-sm focus:border-yellow focus:ring-yellow'
           placeholder='Search Discord servers'
         />
+        <div
+          onClick={() => setSelectedGuilds(guilds.map((guild) => guild.id))}
+          className='cursor-pointer whitespace-nowrap text-white/40 hover:underline'
+        >
+          Selected All
+        </div>
+        <div
+          onClick={() => setSelectedGuilds([])}
+          className='cursor-pointer whitespace-nowrap text-white/40 hover:underline'
+        >
+          Deselect All
+        </div>
       </div>
       <div className='mt-8 grid grid-cols-3 gap-4 pb-36'>
         {filteredGuilds.map((guild) => (

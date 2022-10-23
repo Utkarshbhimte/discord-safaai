@@ -162,6 +162,7 @@ export default function HomePage() {
             </div>
             <GuildExplorer
               guilds={guilds}
+              setSelectedGuilds={setSelectedGuilds}
               onGuildSelect={handleGuildSelect}
               selectedGuilds={selectedGuilds}
             />
