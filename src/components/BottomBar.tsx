@@ -14,7 +14,7 @@ const BottomBar: React.FC<BottomBarProps> = ({
   setSelectedGuilds,
 }) => {
   // get the first 5 guilds
-  const guildsToDisplay = selectedGuilds.slice(0, 2);
+  const guildsToDisplay = selectedGuilds.slice(0, 4);
 
   // get the count of the remaining guilds
   const remainingGuilds = Math.max(
@@ -44,14 +44,12 @@ const BottomBar: React.FC<BottomBarProps> = ({
                         selectedGuilds.filter((id) => id !== guildId)
                       )
                     }
-                    className='-ml-2 cursor-pointer'
+                    className='-ml-4 cursor-pointer shadow-2xl'
                   >
                     <GuildLogo
                       key={guildId}
                       guild={guild}
-                      className={clsx(
-                        'rounded-full border-2 border-yellow shadow-2xl'
-                      )}
+                      className={clsx('rounded-full border-2 border-yellow')}
                     />
                   </div>
                 );
