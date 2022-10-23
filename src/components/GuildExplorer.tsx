@@ -1,3 +1,4 @@
+import GuildLogo from '@/components/GuildLogo';
 import { Guild } from '@/pages';
 import clsx from 'clsx';
 import React from 'react';
@@ -23,28 +24,11 @@ const GuildExplorer: React.FC<GuildExplorerProps> = ({
       <div className='flex max-w-lg items-stretch'>
         <input
           type='text'
-          className='block w-full rounded-tl-md rounded-bl-md  border-yellow bg-transparent text-white shadow-sm focus:border-yellow focus:ring-yellow'
+          className='block w-full rounded-md border-2 border-yellow bg-transparent text-white shadow-sm focus:border-yellow focus:ring-yellow'
           placeholder='Search Discord servers'
         />
-        <button className='rounded-tr-md rounded-br-md bg-yellow px-4'>
-          <svg
-            width={24}
-            height={24}
-            viewBox='0 0 24 24'
-            fill='none'
-            xmlns='http://www.w3.org/2000/svg'
-          >
-            <path
-              d='M14 5l7 7m0 0l-7 7m7-7H3'
-              stroke='#120029'
-              strokeWidth={2}
-              strokeLinecap='round'
-              strokeLinejoin='round'
-            />
-          </svg>
-        </button>
       </div>
-      <div className='mt-8 grid grid-cols-3 gap-4'>
+      <div className='mt-8 grid grid-cols-3 gap-4 pb-36'>
         {filteredGuilds.map((guild) => (
           <div
             className={clsx(
@@ -56,10 +40,12 @@ const GuildExplorer: React.FC<GuildExplorerProps> = ({
             key={guild.id}
             onClick={() => onGuildSelect(guild.id)}
           >
-            <img
-              className='h-12 w-12 rounded-2xl'
-              src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.jpg`}
-              alt=''
+            <GuildLogo
+              guild={guild}
+              className={clsx(
+                selectedGuilds.includes(guild.id) && 'bg-yellow text-purple',
+                !selectedGuilds.includes(guild.id) && 'bg-white/20 text-white'
+              )}
             />
             <span className='block flex-1 truncate'>{guild.name}</span>
             {selectedGuilds.includes(guild.id) && (
@@ -67,7 +53,7 @@ const GuildExplorer: React.FC<GuildExplorerProps> = ({
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
                 viewBox='0 0 24 24'
-                strokeWidth={2}
+                strokeWidth={3}
                 stroke='currentColor'
                 className='h-5 w-5 text-yellow'
               >

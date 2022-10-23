@@ -5,6 +5,9 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import { fetchWithToken } from '@/lib/fetchWithToken';
 import GuildExplorer from '@/components/GuildExplorer';
+import clsx from 'clsx';
+import GuildLogo from '@/components/GuildLogo';
+import BottomBar from '@/components/BottomBar';
 /**
  * SVGR Support
  * Caveat: No React Props Type.
@@ -147,21 +150,28 @@ export default function HomePage() {
       {!userData && <IntroForm onSubmit={handleSubmit} />}
 
       {!!userData && (
-        <div className='layout pt-24'>
-          <div className='py-6'>
-            <h1 className='mb-2 text-4xl font-semibold'>
-              Hey <span className='text-yellow'>#{userData.username}</span>
-            </h1>
-            <p className='text-lg text-gray-400'>
-              Select and delete the servers which you no longer require
-            </p>
+        <>
+          <div className='layout pt-24'>
+            <div className='py-6'>
+              <h1 className='mb-2 text-4xl font-semibold'>
+                Hey <span className='text-yellow'>#{userData.username}</span>
+              </h1>
+              <p className='text-lg text-gray-400'>
+                Select and delete the servers which you no longer require
+              </p>
+            </div>
+            <GuildExplorer
+              guilds={guilds}
+              onGuildSelect={handleGuildSelect}
+              selectedGuilds={selectedGuilds}
+            />
           </div>
-          <GuildExplorer
+          <BottomBar
             guilds={guilds}
-            onGuildSelect={handleGuildSelect}
             selectedGuilds={selectedGuilds}
+            setSelectedGuilds={setSelectedGuilds}
           />
-        </div>
+        </>
       )}
     </Layout>
   );
