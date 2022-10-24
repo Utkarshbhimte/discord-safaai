@@ -28,7 +28,7 @@ const GuildExplorer: React.FC<GuildExplorerProps> = ({
           type='search'
           onChange={(e) => setSearchTerm(e.target.value)}
           value={searchTerm}
-          className='mr-4 mb-4 block w-full rounded-md border-2 border-yellow bg-transparent text-white shadow-sm focus:border-yellow focus:ring-yellow'
+          className='border-; mr-4 mb-4 block w-full rounded-md border-2 bg-transparent text-white shadow-sm focus:border-yellow focus:ring-yellow'
           placeholder='Search Discord servers'
         />
         <div className='mb-4 flex items-center space-x-2'>
@@ -52,7 +52,8 @@ const GuildExplorer: React.FC<GuildExplorerProps> = ({
           <div
             className={clsx(
               'relative flex cursor-pointer items-center space-x-4 rounded-lg border-2 p-4 transition-all duration-300',
-              selectedGuilds.includes(guild.id) && ' border-yellow text-yellow',
+              selectedGuilds.includes(guild.id) &&
+                ' border-pink bg-pink/10 text-pink',
               !selectedGuilds.includes(guild.id) &&
                 'border-white/20 hover:bg-white/20'
             )}
@@ -62,7 +63,7 @@ const GuildExplorer: React.FC<GuildExplorerProps> = ({
             <GuildLogo
               guild={guild}
               className={clsx(
-                selectedGuilds.includes(guild.id) && 'bg-yellow text-purple',
+                selectedGuilds.includes(guild.id) && 'bg-pink text-purple',
                 !selectedGuilds.includes(guild.id) && 'bg-white/20 text-white'
               )}
             />
@@ -74,7 +75,7 @@ const GuildExplorer: React.FC<GuildExplorerProps> = ({
                 viewBox='0 0 24 24'
                 strokeWidth={3}
                 stroke='currentColor'
-                className='h-5 w-5 text-yellow'
+                className='h-5 w-5 text-pink'
               >
                 <path
                   strokeLinecap='round'

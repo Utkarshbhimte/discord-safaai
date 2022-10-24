@@ -82,11 +82,11 @@ const BottomBar: React.FC<BottomBarProps> = ({
                 return (
                   <div
                     key={guild.id}
-                    onClick={() =>
-                      setSelectedGuilds(
-                        selectedGuilds.filter((id) => id !== guildId)
-                      )
-                    }
+                    // onClick={() =>
+                    //   setSelectedGuilds(
+                    //     selectedGuilds.filter((id) => id !== guildId)
+                    //   )
+                    // }
                     className='-ml-4 cursor-pointer shadow-2xl'
                   >
                     <GuildLogo
