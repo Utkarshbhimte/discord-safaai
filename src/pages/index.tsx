@@ -1,13 +1,10 @@
 import * as React from 'react';
 
+import BottomBar from '@/components/BottomBar';
+import GuildExplorer from '@/components/GuildExplorer';
 import IntroForm from '@/components/IntroForm';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
-import { fetchWithToken } from '@/lib/fetchWithToken';
-import GuildExplorer from '@/components/GuildExplorer';
-import clsx from 'clsx';
-import GuildLogo from '@/components/GuildLogo';
-import BottomBar from '@/components/BottomBar';
 /**
  * SVGR Support
  * Caveat: No React Props Type.
@@ -99,42 +96,6 @@ export default function HomePage() {
     setSelectedGuilds(newSelectedGuilds);
   };
 
-  const deleteGuild = async (guildId: string) => {
-    return fetchWithToken(
-      `https://discord.com/api/v9/users/@me/guilds/${guildId}`,
-      {
-        method: 'DELETE',
-      }
-    );
-  };
-
-  const deleteAllGuilds = async () => {
-    setLoading(true);
-    for (const guildId of selectedGuilds) {
-      await deleteGuild(guildId);
-    }
-    await fetchGuilds();
-    setLoading(false);
-    setSelectedGuilds([]);
-  };
-
-  const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
-    e
-  ) => {
-    const value = e.currentTarget.value || '';
-    setSearchTerm(value);
-  };
-
-  const filteredGuilds = React.useMemo(() => {
-    if (!searchTerm) {
-      return guilds;
-    }
-
-    return guilds.filter((guild) => {
-      return guild.name.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-  }, [guilds, searchTerm]);
-
   React.useEffect(() => {
     const tokenFromLocalStorage = localStorage?.getItem('token');
     if (tokenFromLocalStorage) {
@@ -171,9 +132,12 @@ export default function HomePage() {
             guilds={guilds}
             selectedGuilds={selectedGuilds}
             setSelectedGuilds={setSelectedGuilds}
+            setGuilds={setGuilds}
           />
         </>
       )}
+
+      {/* <SuccessModal /> */}
     </Layout>
   );
 }

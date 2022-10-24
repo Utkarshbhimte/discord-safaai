@@ -1,5 +1,6 @@
 import Logo from '@/components/Logo';
 import * as React from 'react';
+import { Toaster } from 'react-hot-toast';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   // Put Header or Footer Here
@@ -12,6 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
 
       {children}
+      <Toaster />
     </div>
   );
 }

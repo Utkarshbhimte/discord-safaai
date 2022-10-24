@@ -1,18 +1,24 @@
 import GuildLogo from '@/components/GuildLogo';
+import { fetchWithToken } from '@/lib/fetchWithToken';
 import { Guild } from '@/pages';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 
 interface BottomBarProps {
   selectedGuilds: string[];
   setSelectedGuilds: React.Dispatch<React.SetStateAction<string[]>>;
   guilds: Guild[];
+  setGuilds: React.Dispatch<React.SetStateAction<Guild[]>>;
 }
 const BottomBar: React.FC<BottomBarProps> = ({
   selectedGuilds,
   guilds,
   setSelectedGuilds,
+  setGuilds,
 }) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [deletedNumber, setDeletedNumber] = useState<number>(0);
   // get the first 5 guilds
   const guildsToDisplay = selectedGuilds.slice(0, 4);
 
@@ -21,6 +27,42 @@ const BottomBar: React.FC<BottomBarProps> = ({
     selectedGuilds.length - guildsToDisplay.length,
     0
   );
+
+  const deleteGuild = async (guildId: string) => {
+    await fetchWithToken(
+      `https://discord.com/api/v9/users/@me/guilds/${guildId}`,
+      {
+        method: 'DELETE',
+      }
+    );
+    setDeletedNumber(deletedNumber + 1);
+
+    return;
+  };
+
+  const deleteAllGuilds = async () => {
+    setLoading(true);
+
+    // filter out the rest of the guilds
+    const guildsLeft = guilds.filter(
+      (guild) => !selectedGuilds.includes(guild.id)
+    );
+    setGuilds(guildsLeft);
+
+    for (const guildId of selectedGuilds) {
+      await deleteGuild(guildId);
+    }
+
+    if (selectedGuilds.length > 1) {
+      toast.success(`You have left ${selectedGuilds.length} guilds.`);
+    } else {
+      const guildName = guilds.find((guild) => guild.id === selectedGuilds[0]);
+      toast.success(`You have left ${guildName}.`);
+    }
+
+    setLoading(false);
+    setSelectedGuilds([]);
+  };
 
   return (
     <div
@@ -39,6 +81,7 @@ const BottomBar: React.FC<BottomBarProps> = ({
 
                 return (
                   <div
+                    key={guild.id}
                     onClick={() =>
                       setSelectedGuilds(
                         selectedGuilds.filter((id) => id !== guildId)
@@ -49,7 +92,7 @@ const BottomBar: React.FC<BottomBarProps> = ({
                     <GuildLogo
                       key={guildId}
                       guild={guild}
-                      className={clsx('rounded-full border-2 border-yellow')}
+                      className={clsx('rounded-full')}
                     />
                   </div>
                 );
@@ -61,10 +104,25 @@ const BottomBar: React.FC<BottomBarProps> = ({
           </div>
           <button
             type='button'
-            className='focus:ring-bg-pink/80 inline-flex items-center rounded-md border border-transparent bg-pink px-3 py-2 text-sm font-medium leading-4 text-white shadow-sm hover:bg-pink/80 focus:outline-none focus:ring-2 focus:ring-offset-2'
+            onClick={deleteAllGuilds}
+            className='my-1 inline-flex items-center rounded-md border border-transparent bg-pink px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-pink focus:outline-none focus:ring-2 focus:ring-pink focus:ring-offset-2'
           >
-            Leave selected servers
+            {!loading && <span>Leave selected servers</span>}
+            {loading && (
+              <span>
+                Deleting servers ({deletedNumber}/{selectedGuilds.length})
+              </span>
+            )}
           </button>
+
+          {loading && (
+            <div
+              style={{
+                width: (deletedNumber / selectedGuilds.length) * 100 + '%',
+              }}
+              className='absolute top-0 left-0 h-full w-16 animate-pulse bg-white/20 transition duration-300'
+            ></div>
+          )}
         </div>
       </div>
     </div>
