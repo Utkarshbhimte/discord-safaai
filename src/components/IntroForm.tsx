@@ -1,6 +1,7 @@
 import { fetchWithToken } from '@/lib/fetchWithToken';
 import { User } from '@/pages';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 
 interface IntroFormProps {
   onSubmit: (user: User) => Promise<void>;
@@ -20,7 +21,12 @@ const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
       const resp = await fetchWithToken(
         'https://canary.discord.com/api/users/@me'
       );
-      const json: User = await resp.json();
+      const json: User & { message?: string } = await resp.json();
+
+      if (json.message) {
+        toast.error(json.message);
+        return;
+      }
 
       // save the token
       localStorage?.setItem('token', token);

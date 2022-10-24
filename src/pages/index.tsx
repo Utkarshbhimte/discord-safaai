@@ -105,7 +105,6 @@ export default function HomePage() {
 
   return (
     <Layout>
-      {/* <Seo templateTitle='Home' /> */}
       <Seo />
 
       {!userData && <IntroForm onSubmit={handleSubmit} />}
