@@ -33,9 +33,9 @@ const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
     }
   };
   return (
-    <div className='layout relative grid min-h-screen flex-1 grid-cols-3 items-center justify-between space-x-4 py-2'>
+    <div className='layout relative grid min-h-screen flex-1 items-center justify-between py-2 md:grid-cols-3'>
       <div className='col-span-2'>
-        <h1 className='mb-16 text-8xl font-semibold'>
+        <h1 className='mb-16 text-4xl font-semibold md:text-8xl'>
           Clean <br />
           the irrelevant{' '}
           <span className='italic text-yellow'>Discord Servers</span>
@@ -107,12 +107,16 @@ const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
               fill='#E2E2EA'
             />
           </svg>
-          <span className='underline'>
+          <a
+            target={'_blank'}
+            href='https://www.youtube.com/watch?v=bxCforAZD7k&ab_channel=Exordium'
+            className='underline'
+          >
             Watch tutorial to learn how to get the token
-          </span>
+          </a>
         </a>
 
-        <div className='absolute bottom-8 flex items-center space-x-4'>
+        <div className='absolute bottom-2 flex items-center space-x-4 md:bottom-8'>
           <span className='font-medium italic'>Powered By</span>
           <svg
             width={171}
@@ -162,7 +166,6 @@ const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
           </svg>
         </div>
       </div>
-      <div></div>
 
       <div className='fixed bottom-0 left-0 h-1 w-full bg-yellow'></div>
     </div>
