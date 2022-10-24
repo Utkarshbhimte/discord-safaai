@@ -47,11 +47,8 @@ const BottomBar: React.FC<BottomBarProps> = ({
     const guildsLeft = guilds.filter(
       (guild) => !selectedGuilds.includes(guild.id)
     );
-    setGuilds(guildsLeft);
 
-    for (const guildId of selectedGuilds) {
-      await deleteGuild(guildId);
-    }
+    await Promise.all(selectedGuilds.map(deleteGuild));
 
     if (selectedGuilds.length > 1) {
       toast.success(`You have left ${selectedGuilds.length} guilds.`);
@@ -60,8 +57,11 @@ const BottomBar: React.FC<BottomBarProps> = ({
       toast.success(`You have left ${guildName}.`);
     }
 
+    setGuilds(guildsLeft);
+
     setLoading(false);
     setSelectedGuilds([]);
+    setDeletedNumber(0);
   };
 
   return (

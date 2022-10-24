@@ -5,6 +5,8 @@ import GuildExplorer from '@/components/GuildExplorer';
 import IntroForm from '@/components/IntroForm';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
+import toast from 'react-hot-toast';
+import { fetchWithToken } from '@/lib/fetchWithToken';
 /**
  * SVGR Support
  * Caveat: No React Props Type.
@@ -50,6 +52,12 @@ export interface User {
   phone: string;
 }
 
+export const getUserInfo = async () => {
+  const resp = await fetchWithToken('https://canary.discord.com/api/users/@me');
+  const json: User & { message?: string } = await resp.json();
+  return json;
+};
+
 export default function HomePage() {
   // const [token, setToken] = React.useState<string>();
 
@@ -74,13 +82,29 @@ export default function HomePage() {
     if (!token) {
       throw new Error('No token found');
     }
+    try {
+      const resp = await fetch(
+        'https://canary.discord.com/api/users/@me/guilds',
+        { headers: { authorization: token } }
+      );
+      const json: Guild[] & { message?: string } = await resp.json();
 
-    const resp = await fetch(
-      'https://canary.discord.com/api/users/@me/guilds',
-      { headers: { authorization: token } }
-    );
-    const json: Guild[] = await resp.json();
-    setGuilds(json);
+      if (json.message) {
+        if (resp.status === 429) {
+          // wait for 1 second
+          setTimeout(() => {
+            fetchGuilds();
+          }, 1000);
+          return;
+        }
+        throw new Error(json.message);
+      }
+
+      setGuilds(json);
+    } catch (error) {
+      toast.error((error as any).message);
+      console.error(error);
+    }
   };
 
   const handleGuildSelect = (guildId: string) => {
@@ -100,6 +124,9 @@ export default function HomePage() {
     const tokenFromLocalStorage = localStorage?.getItem('token');
     if (tokenFromLocalStorage) {
       fetchGuilds();
+      getUserInfo().then((user) => {
+        setUserData(user);
+      });
     }
   }, []);
 

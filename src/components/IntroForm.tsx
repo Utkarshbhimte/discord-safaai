@@ -1,5 +1,5 @@
 import { fetchWithToken } from '@/lib/fetchWithToken';
-import { User } from '@/pages';
+import { getUserInfo, User } from '@/pages';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -18,15 +18,7 @@ const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
     try {
       setLoading(true);
       // get user data from discord
-      const resp = await fetchWithToken(
-        'https://canary.discord.com/api/users/@me'
-      );
-      const json: User & { message?: string } = await resp.json();
-
-      if (json.message) {
-        toast.error(json.message);
-        return;
-      }
+      const json = await getUserInfo();
 
       // save the token
       localStorage?.setItem('token', token);
