@@ -100,7 +100,12 @@ const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
             )}
           </button>
         </form>
-        <a className='mt-3 flex cursor-pointer items-center space-x-2 text-sm'>
+        <a
+          target={'_blank'}
+          href='https://www.youtube.com/watch?v=bxCforAZD7k&ab_channel=Exordium'
+          rel='noreferrer'
+          className='mt-3 flex cursor-pointer items-center space-x-2 text-sm'
+        >
           <svg
             width={14}
             height={14}
@@ -113,13 +118,9 @@ const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
               fill='#E2E2EA'
             />
           </svg>
-          <a
-            target={'_blank'}
-            href='https://www.youtube.com/watch?v=bxCforAZD7k&ab_channel=Exordium'
-            className='underline'
-          >
+          <span className='underline'>
             Watch tutorial to learn how to get the token
-          </a>
+          </span>
         </a>
 
         <div className='absolute bottom-2 flex items-center space-x-4 md:bottom-8'>
