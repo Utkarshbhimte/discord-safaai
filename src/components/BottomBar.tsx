@@ -1,4 +1,5 @@
 import GuildLogo from '@/components/GuildLogo';
+import SuccessModal from '@/components/SuccessModal';
 import { fetchWithToken } from '@/lib/fetchWithToken';
 import { Guild } from '@/pages';
 import clsx from 'clsx';
@@ -41,6 +42,7 @@ const BottomBar: React.FC<BottomBarProps> = ({
   };
 
   const deleteAllGuilds = async () => {
+    setDeletedNumber(0);
     setLoading(true);
 
     // filter out the rest of the guilds
@@ -50,18 +52,11 @@ const BottomBar: React.FC<BottomBarProps> = ({
 
     await Promise.all(selectedGuilds.map(deleteGuild));
 
-    if (selectedGuilds.length > 1) {
-      toast.success(`You have left ${selectedGuilds.length} guilds.`);
-    } else {
-      const guildName = guilds.find((guild) => guild.id === selectedGuilds[0]);
-      toast.success(`You have left ${guildName}.`);
-    }
-
     setGuilds(guildsLeft);
+    setDeletedNumber(selectedGuilds.length);
 
     setLoading(false);
     setSelectedGuilds([]);
-    setDeletedNumber(0);
   };
 
   return (
@@ -125,6 +120,7 @@ const BottomBar: React.FC<BottomBarProps> = ({
           )}
         </div>
       </div>
+      <SuccessModal count={deletedNumber} setOpen={() => setDeletedNumber(0)} />
     </div>
   );
 };

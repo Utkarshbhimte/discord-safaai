@@ -7,6 +7,7 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import toast from 'react-hot-toast';
 import { fetchWithToken } from '@/lib/fetchWithToken';
+import SuccessModal from '@/components/SuccessModal';
 /**
  * SVGR Support
  * Caveat: No React Props Type.
@@ -162,8 +163,6 @@ export default function HomePage() {
           />
         </>
       )}
-
-      {/* <SuccessModal /> */}
     </Layout>
   );
 }

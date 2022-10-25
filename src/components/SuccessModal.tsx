@@ -1,12 +1,15 @@
+import { PoweredBySpan } from '@/components/IntroForm';
 import { Dialog, Transition } from '@headlessui/react';
 import { CheckIcon } from '@heroicons/react/24/outline';
 import { Fragment, useState } from 'react';
 
-export default function SuccessModal() {
-  const [open, setOpen] = useState(true);
-
+interface SuccessModalProps {
+  count: number;
+  setOpen: () => void;
+}
+const SuccessModal: React.FC<SuccessModalProps> = ({ count, setOpen }) => {
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition.Root show={!!count} as={Fragment}>
       <Dialog as='div' className='relative z-10' onClose={setOpen}>
         <Transition.Child
           as={Fragment}
@@ -17,7 +20,7 @@ export default function SuccessModal() {
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' />
+          <div className='fixed inset-0 bg-gray-800 bg-opacity-75 transition-opacity' />
         </Transition.Child>
 
         <div className='fixed inset-0 z-10 overflow-y-auto'>
@@ -31,37 +34,27 @@ export default function SuccessModal() {
               leaveFrom='opacity-100 translate-y-0 sm:scale-100'
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
-              <Dialog.Panel className='relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6'>
-                <div>
-                  <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100'>
-                    <CheckIcon
-                      className='h-6 w-6 text-green-600'
-                      aria-hidden='true'
-                    />
+              <Dialog.Panel className='relative  max-w-2xl transform overflow-hidden rounded-lg bg-purple px-4 pt-5 pb-4 text-left text-white shadow-xl transition-all sm:my-8 sm:w-full sm:p-6'>
+                <div className='flex items-center space-x-4'>
+                  <img src='/images/done.png' alt='' />
+                  <div>
+                    {count && (
+                      <h3 className='text-3xl font-semibold'>
+                        Yay! you removed <br />
+                        <span className='text-yellow'>
+                          {count} server{count > 1 ? 's' : ''}
+                        </span>
+                      </h3>
+                    )}
                   </div>
-                  <div className='mt-3 text-center sm:mt-5'>
-                    <Dialog.Title
-                      as='h3'
-                      className='text-lg font-medium leading-6 text-gray-900'
-                    >
-                      Payment successful
-                    </Dialog.Title>
-                    <div className='mt-2'>
-                      <p className='text-sm text-gray-500'>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Consequatur amet labore.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className='mt-5 sm:mt-6'>
-                  <button
-                    type='button'
-                    className='inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm'
-                    onClick={() => setOpen(false)}
+                  <a
+                    href='https://onchain.build'
+                    target='_blank'
+                    rel='noreferrer'
+                    className='absolute bottom-2 right-2 scale-75 transform opacity-40 transition-opacity duration-300 hover:opacity-100'
                   >
-                    Go back to dashboard
-                  </button>
+                    <PoweredBySpan />
+                  </a>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -70,4 +63,6 @@ export default function SuccessModal() {
       </Dialog>
     </Transition.Root>
   );
-}
+};
+
+export default SuccessModal;
