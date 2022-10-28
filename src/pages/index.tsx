@@ -60,12 +60,6 @@ export const getUserInfo = async () => {
 };
 
 export default function HomePage() {
-  // const [token, setToken] = React.useState<string>();
-
-  const [loading, setLoading] = React.useState(false);
-
-  const [searchTerm, setSearchTerm] = React.useState('');
-
   const [guilds, setGuilds] = React.useState<Guild[]>([]);
   const [selectedGuilds, setSelectedGuilds] = React.useState<string[]>([]);
 
