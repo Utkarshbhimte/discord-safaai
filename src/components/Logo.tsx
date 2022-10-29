@@ -29,7 +29,7 @@ const Logo = () => {
         />
       </svg>
 
-      <span className='font-medium'>SwaachDiscord</span>
+      <span className='font-medium'>SwachDiscord</span>
     </div>
   );
 };
