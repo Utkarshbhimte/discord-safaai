@@ -32,11 +32,21 @@ const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
   return (
     <div className='layout relative grid min-h-screen flex-1 items-center justify-between py-2 md:grid-cols-3'>
       <div className='col-span-2'>
-        <h1 className='mb-16 text-4xl font-semibold md:text-8xl'>
+        <h1 className='mb-8 text-4xl font-semibold md:text-8xl'>
           Clean <br />
           the irrelevant{' '}
           <span className='italic text-yellow'>Discord Servers</span>
         </h1>
+
+        <div className='my-4 max-w-lg rounded-xl border border-pink p-3 text-sm'>
+          <strong>
+            Warning: be careful, sharing your user token can be dangerous!
+          </strong>{' '}
+          <br />
+          This page does not use your user token in any harmful way and only
+          uses it to authenticate with Discord, fetch your serves and help you
+          leave them, something that is not supported by the official API.
+        </div>
 
         <form onSubmit={handleSubmit} className='flex max-w-lg items-stretch'>
           <input
