@@ -46,6 +46,14 @@ const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
           This page does not use your user token in any harmful way and only
           uses it to authenticate with Discord, fetch your serves and help you
           leave them, something that is not supported by the official API.
+          <a
+            href='https://githubbox.com/Utkarshbhimte/discord-safaai'
+            target={'_blank'}
+            rel='noreferrer'
+            className='mt-2 block underline'
+          >
+            Click here to check the code and deploy your own version.
+          </a>{' '}
         </div>
 
         <form onSubmit={handleSubmit} className='flex max-w-lg items-stretch'>
@@ -121,18 +129,6 @@ const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
           </svg>
           <span className='underline'>
             Watch tutorial to learn how to get the token
-          </span>
-        </a>
-
-        <a
-          href='https://githubbox.com/Utkarshbhimte/discord-safaai'
-          target={'_blank'}
-          rel='noreferrer'
-          className='my-4 flex space-x-2 text-sm'
-        >
-          <span role='presentation'>🚀</span>
-          <span className='cursor-pointer underline'>
-            Check the code and deploy your own version on CodeSandBox
           </span>
         </a>
 
