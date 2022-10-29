@@ -8,7 +8,6 @@ interface IntroFormProps {
 }
 const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -112,6 +111,18 @@ const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
           </svg>
           <span className='underline'>
             Watch tutorial to learn how to get the token
+          </span>
+        </a>
+
+        <a
+          href='https://githubbox.com/Utkarshbhimte/discord-safaai'
+          target={'_blank'}
+          rel='noreferrer'
+          className='my-4 flex space-x-2 text-sm'
+        >
+          <span role='presentation'>🚀</span>
+          <span className='cursor-pointer underline'>
+            Check the code and deploy your own version on CodeSandBox
           </span>
         </a>
 
