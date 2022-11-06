@@ -16,15 +16,17 @@ const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
 
     try {
       setLoading(true);
+      localStorage?.setItem('token', token);
+
       // get user data from discord
       const json = await getUserInfo();
 
       // save the token
-      localStorage?.setItem('token', token);
 
       await onSubmit(json);
     } catch (error) {
       console.error(error);
+      localStorage?.removeItem('token');
     } finally {
       setLoading(false);
     }
