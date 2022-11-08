@@ -134,12 +134,19 @@ const IntroForm: React.FC<IntroFormProps> = ({ onSubmit }) => {
           </span>
         </a>
 
+        <a
+          href='https://onchain.build'
+          target='_blank'
+          rel='noreferrer'
+          className='mt-8 block'
+        >
+          <PoweredBySpan />
+        </a>
+
         <div className='absolute bottom-2 flex items-center space-x-4 md:bottom-8'></div>
       </div>
 
-      <div className='fixed bottom-0 left-0 h-1 w-full bg-yellow'>
-        <PoweredBySpan />
-      </div>
+      <div className='fixed bottom-0 left-0 h-1 w-full bg-yellow'></div>
     </div>
   );
 };
@@ -149,7 +156,9 @@ export default IntroForm;
 export const PoweredBySpan = () => {
   return (
     <>
-      <span className='font-medium italic'>Powered By</span>
+      <span className='mb-2 block text-xs font-medium italic opacity-60'>
+        Built with ❤️ by
+      </span>
       <svg
         width={171}
         height={41}
